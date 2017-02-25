@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 const noop = () => {
 }
 
 class Preload extends React.Component {
+  static propTypes = {
+    component: PropTypes.element.isRequired,
+    fallback: PropTypes.element,
+    conditions: PropTypes.oneOf(PropTypes.func, PropTypes.object),
+    resolver: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
 
@@ -75,6 +82,7 @@ export default({ init = noop, conditions, fallback } = {}) => {
       <Preload conditions={conditions} fallback={fallback} component={component} />
   }
   else if (init instanceof Promise) {
-    return component => <Preload conditions={conditions} fallback={fallback} component={component} resolver={init} />
+    return component => <Preload conditions={conditions} fallback={fallback} component={component}
+                                 resolver={init} />
   }
 }
