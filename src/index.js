@@ -77,7 +77,6 @@ class Preload extends React.Component {
 export default({ init = noop, conditions, fallback } = {}) => {
   if (typeof init === 'function') {
     init()
-    // return component => <Preload conditions={conditions} component={component} />
     return component =>
       <Preload conditions={conditions} fallback={fallback} component={component} />
   }
