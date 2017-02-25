@@ -13,14 +13,20 @@ class Preload extends React.Component {
   }
 
   checkConditions(componentProps, conditions) {
-    let areConditionsMet = true
-    conditions && Object.keys(conditions).forEach(propName => {
-      const prop = componentProps[propName]
-      areConditionsMet &= conditions[propName](prop)
-    })
-    this.setState({
-      areConditionsMet: !!areConditionsMet,
-    })
+    if (typeof(conditions) === 'function') {
+      this.setState({
+        areConditionsMet: conditions(componentProps)
+      })
+    } else {
+      let areConditionsMet = true
+      conditions && Object.keys(conditions).forEach(propName => {
+        const prop = componentProps[propName]
+        areConditionsMet &= conditions[propName](prop)
+      })
+      this.setState({
+        areConditionsMet: !!areConditionsMet,
+      })
+    }
   }
 
   wrappedComponentProps() {
@@ -28,6 +34,7 @@ class Preload extends React.Component {
       component,
       conditions,
       resolver,
+      fallback,
       ...wrappedProps
     } = this.props
     return wrappedProps
@@ -50,24 +57,24 @@ class Preload extends React.Component {
   }
 
   render() {
-    const { component } = this.props
+    const { component, fallback } = this.props
     const { isResolved, areConditionsMet } = this.state
     if (!isResolved || !areConditionsMet) {
-      return null
+      return fallback || null
     }
 
     return React.cloneElement(component, this.wrappedComponentProps())
   }
 }
 
-export default({ init = noop, conditions } = {}) => {
+export default({ init = noop, conditions, fallback } = {}) => {
   if (typeof init === 'function') {
     init()
     // return component => <Preload conditions={conditions} component={component} />
     return component =>
-      <Preload conditions={conditions} component={component} />
+      <Preload conditions={conditions} fallback={fallback} component={component} />
   }
   else if (init instanceof Promise) {
-    return component => <Preload conditions={conditions} component={component} resolver={init} />
+    return component => <Preload conditions={conditions} fallback={fallback} component={component} resolver={init} />
   }
 }

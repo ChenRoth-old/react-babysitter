@@ -43,7 +43,16 @@ describe('preload', () => {
   })
 
   describe('conditions', () => {
-    it('should not render component if unmet', () => {
+    it('should not render component if unmet (function version)', () => {
+      const conditions = props =>
+        props.foo !== undefined
+      const wrapper = shallow(preload({
+        conditions,
+      })(component))
+      expect(wrapper.html()).to.equal(null)
+    })
+
+    it('should not render component if unmet (object version)', () => {
       const conditions = {
         foo: value => value !== undefined
       }
@@ -79,5 +88,20 @@ describe('preload', () => {
       expect(wrapper.html()).to.equal(shallow(component).html())
     })
   })
+
+  describe('fallback', () => {
+    it('should render a fallback component', () => {
+      const conditions = () => false
+      const fallback = <div>this is a fallback</div>
+      const wrapper = shallow(preload({
+        conditions,
+        fallback,
+      })(component))
+
+      expect(wrapper.html()).to.equal(shallow(fallback).html())
+
+    })
+  })
+
 
 })
