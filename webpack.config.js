@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const path = require('path')
 
 module.exports = (env = 'development') => {
@@ -11,6 +12,11 @@ module.exports = (env = 'development') => {
       path: path.resolve(__dirname, 'build'),
       filename: 'preload.js'
     },
+    plugins: [
+      new webpack.IgnorePlugin(/react\/addons/),
+      new webpack.IgnorePlugin(/react\/lib\/ReactContext/),
+      new webpack.IgnorePlugin(/react\/lib\/ExecutionEnvironment/)
+    ],
     module: {
       rules: [
         {

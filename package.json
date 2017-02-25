@@ -9,9 +9,12 @@
     "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-preset-react": "^6.23.0",
+    "enzyme": "^2.7.1",
     "eslint": "^3.16.1",
     "eslint-plugin-react": "^6.10.0",
     "react": "^15.4.2",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dom": "^15.4.2",
     "webpack": "^2.2.1"
   },
   "scripts": {
