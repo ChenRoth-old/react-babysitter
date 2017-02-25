@@ -8,7 +8,7 @@ module.exports = {
   "globals": {
     "module": true,
     "require": true,
-    "__dirname": true
+    "__dirname": true,
   },
   "extends": "eslint:recommended",
   "parserOptions": {

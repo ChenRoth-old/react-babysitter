@@ -10,6 +10,18 @@ module.exports = (env = 'development') => {
     output: {
       path: path.resolve(__dirname, 'build'),
       filename: 'preload.js'
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          use: [
+            {
+              loader: 'babel-loader'
+            }
+          ]
+        }
+      ]
     }
   }
 }
