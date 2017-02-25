@@ -1,0 +1,17 @@
+{
+  "name": "preload",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "repository": {},
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-plugin-react": "^6.10.0",
+    "webpack": "^2.2.1"
+  },
+  "scripts": {
+    "start": "webpack",
+    "watch": "webpack --watch"
+  }
+}
