@@ -25,14 +25,18 @@ describe('preload', () => {
     })
 
     it('should be resolved (if is a promise) before rendering component', (done) => {
-      const init = new Promise(resolve => {
-        setTimeout(resolve, 1)
-      })
+      let promise
+      const init = () => {
+        promise = new Promise(resolve => {
+          setTimeout(resolve, 1)
+        })
+        return promise
+      }
       const wrapper = getShallowElement(preload({ init })(Component))
       // assert that preload renders null before init is resolved
       expect(wrapper.html()).to.equal(null)
 
-      init.then(() => {
+      promise.then(() => {
         wrapper.update()
         try {
           // assert that preload renders component after init is resolved
@@ -49,7 +53,7 @@ describe('preload', () => {
   describe('conditions', () => {
     it('should not render component if unmet (function version)', () => {
       const conditions = props =>
-        props.foo !== undefined
+      props.foo !== undefined
       const wrapper = getShallowElement(preload({
         conditions,
       })(Component))

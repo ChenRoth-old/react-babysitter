@@ -10,7 +10,7 @@ export default({ init = noop, conditions, fallback } = {}) => {
         super(props)
 
         this.state = {
-          isResolved: !(init instanceof Promise),
+          isResolved: !init,
           areConditionsMet: !conditions,
         }
       }
@@ -27,7 +27,7 @@ export default({ init = noop, conditions, fallback } = {}) => {
             areConditionsMet &= conditions[propName](prop)
           })
           this.setState({
-            areConditionsMet: !!areConditionsMet,
+            areConditionsMet,
           })
         }
       }
@@ -37,14 +37,17 @@ export default({ init = noop, conditions, fallback } = {}) => {
       }
 
       componentWillMount() {
-        if (typeof init === 'function') {
-          init(this.props)
-        } else if (init instanceof Promise) {
-          init.then(() => {
+        if (typeof init !== 'function') {
+          return
+        }
+        const res = init(this.props)
+        if (res instanceof Promise) {
+          res.then(() => {
             this.setState({ isResolved: true })
           })
+        } else {
+          this.setState({ isResolved: true })
         }
-
         this.checkConditions(this.props, conditions)
       }
 
@@ -53,7 +56,6 @@ export default({ init = noop, conditions, fallback } = {}) => {
         if (!isResolved || !areConditionsMet) {
           return fallback ? React.createElement(fallback, this.props) : null
         }
-
         return React.createElement(Component, this.props)
       }
     }
