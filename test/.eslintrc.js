@@ -5,16 +5,14 @@ module.exports = {
     "es6": true,
     "commonjs": true,
     "node": true,
+    "mocha": true
   },
   "globals": {
     "module": true,
     "require": true,
     "__dirname": true,
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ],
+  "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
