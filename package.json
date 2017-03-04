@@ -1,8 +1,9 @@
 {
-  "name": "preload",
+  "name": "react-babysitter",
   "version": "0.0.1",
   "private": true,
   "main": "./lib/index.js",
+  "description": "A React HOC which lets you render components safely, only when your data is ready",
   "repository": {},
   "license": "MIT",
   "devDependencies": {
