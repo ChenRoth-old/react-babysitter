@@ -29,6 +29,7 @@
     "test": "mocha --compilers js:babel-core/register --watch"
   },
   "dependencies": {
-    "babel-plugin-transform-runtime": "^6.23.0"
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "hoist-non-react-statics": "^1.2.0"
   }
 }

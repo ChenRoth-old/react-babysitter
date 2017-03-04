@@ -1,4 +1,5 @@
 import React from 'react'
+import hoistNonReactStatic from 'hoist-non-react-statics'
 const noop = () => {
 }
 
@@ -58,13 +59,6 @@ export default({ init = noop, conditions, fallback } = {}) => {
     }
     const getDisplayName = () => Component.displayName || Component.name || 'Component'
     Preload.displayName = `Preload(${getDisplayName()})`
-    return Preload
+    return hoistNonReactStatic(Preload, Component)
   }
-
-// }
-// else
-// if (init instanceof Promise) {
-//   return component => <Preload conditions={conditions} fallback={fallback} component={component}
-//                                resolver={init} />
-// }
 }
