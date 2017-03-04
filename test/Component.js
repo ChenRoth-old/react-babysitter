@@ -9,4 +9,6 @@ MyComponent.propTypes = {
   foo: PropTypes.string,
 }
 
+MyComponent.displayName = 'MyComponent'
+
 export default MyComponent

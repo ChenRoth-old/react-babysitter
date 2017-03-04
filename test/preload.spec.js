@@ -1,22 +1,26 @@
-import React from 'react'
+import React, { createElement } from 'react'
 import { shallow, render } from 'enzyme'
 import { expect } from 'chai'
 import Component from './Component'
 import preload from '../src'
 
-const component = <Component />
+const getShallowElement = (component, props) =>
+  shallow(createElement(component, props))
+
+const getRenderedElement = (component, props) =>
+  render(createElement(component, props))
 
 describe('preload', () => {
   it('should pass component as is when without args', () => {
-    const wrapper = render(preload()(<Component />))
-    expect(wrapper.html()).to.equal(render(component).html())
+    const wrapper = getRenderedElement(preload()(Component))
+    expect(wrapper.html()).to.equal(render(<Component />).html())
   })
 
   describe('init', () => {
     it('should be run before rendering component', () => {
       let counter = 0
       const init = () => counter++
-      preload({ init })(component)
+      getShallowElement(preload({ init })(Component))
       expect(counter).to.equal(1)
     })
 
@@ -24,7 +28,7 @@ describe('preload', () => {
       const init = new Promise(resolve => {
         setTimeout(resolve, 1)
       })
-      const wrapper = shallow(preload({ init })(component))
+      const wrapper = getShallowElement(preload({ init })(Component))
       // assert that preload renders null before init is resolved
       expect(wrapper.html()).to.equal(null)
 
@@ -32,7 +36,7 @@ describe('preload', () => {
         wrapper.update()
         try {
           // assert that preload renders component after init is resolved
-          expect(wrapper.html()).to.equal(shallow(component).html())
+          expect(wrapper.html()).to.equal(shallow(<Component />).html())
           done()
         }
         catch (e) {
@@ -46,9 +50,9 @@ describe('preload', () => {
     it('should not render component if unmet (function version)', () => {
       const conditions = props =>
         props.foo !== undefined
-      const wrapper = shallow(preload({
+      const wrapper = getShallowElement(preload({
         conditions,
-      })(component))
+      })(Component))
       expect(wrapper.html()).to.equal(null)
     })
 
@@ -56,9 +60,9 @@ describe('preload', () => {
       const conditions = {
         foo: value => value !== undefined
       }
-      const wrapper = shallow(preload({
+      const wrapper = getShallowElement(preload({
         conditions,
-      })(component))
+      })(Component))
       expect(wrapper.html()).to.equal(null)
     })
 
@@ -66,10 +70,10 @@ describe('preload', () => {
       const conditions = {
         foo: value => value === 'bar'
       }
-      const wrapper = shallow(preload({
+      const wrapper = getShallowElement(preload({
         conditions,
-      })(React.cloneElement(component, { foo: 'bar' })))
-      expect(wrapper.html()).to.equal(shallow(component).html())
+      })(Component), { foo: 'bar' })
+      expect(wrapper.html()).to.equal(shallow(<Component />).html())
     })
 
     it('should check conditions when props change', () => {
@@ -78,27 +82,27 @@ describe('preload', () => {
       }
 
       // component is rendered with prop undefined
-      const wrapper = shallow(preload({
+      const wrapper = getShallowElement(preload({
         conditions,
-      })(component))
+      })(Component))
 
       // prop is updated to meet condition
       wrapper.setProps({ foo: 'bar' })
 
-      expect(wrapper.html()).to.equal(shallow(component).html())
+      expect(wrapper.html()).to.equal(shallow(<Component />).html())
     })
   })
 
   describe('fallback', () => {
     it('should render a fallback component', () => {
       const conditions = () => false
-      const fallback = <div>this is a fallback</div>
-      const wrapper = shallow(preload({
+      const Fallback = () => <div>this is a fallback</div>
+      const wrapper = getShallowElement(preload({
         conditions,
-        fallback,
-      })(component))
+        fallback: Fallback,
+      })(Component))
 
-      expect(wrapper.html()).to.equal(shallow(fallback).html())
+      expect(wrapper.html()).to.equal(shallow(<Fallback />).html())
 
     })
   })
