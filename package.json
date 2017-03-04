@@ -2,7 +2,7 @@
   "name": "preload",
   "version": "0.0.1",
   "private": true,
-  "main": "index.js",
+  "main": "./lib/index.js",
   "repository": {},
   "license": "MIT",
   "devDependencies": {
@@ -23,8 +23,12 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
+    "build": "BABEL_ENV=commonjs babel src --out-dir lib",
     "start": "webpack",
     "watch": "webpack --watch",
     "test": "mocha --compilers js:babel-core/register --watch"
+  },
+  "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0"
   }
 }
