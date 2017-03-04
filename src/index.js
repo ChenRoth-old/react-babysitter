@@ -6,8 +6,8 @@ class Preload extends React.Component {
   static propTypes = {
     component: PropTypes.element.isRequired,
     fallback: PropTypes.element,
-    conditions: PropTypes.oneOf(PropTypes.func, PropTypes.object),
-    resolver: PropTypes.func,
+    conditions: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
+    resolver: PropTypes.oneOfType([PropTypes.func, PropTypes.instanceOf(Promise)]),
   }
 
   constructor(props) {
