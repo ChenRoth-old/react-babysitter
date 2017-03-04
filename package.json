@@ -24,6 +24,7 @@
     "webpack": "^2.2.1"
   },
   "scripts": {
+    "install": "yarn build",
     "build": "BABEL_ENV=commonjs babel src --out-dir lib",
     "start": "webpack",
     "watch": "webpack --watch",
